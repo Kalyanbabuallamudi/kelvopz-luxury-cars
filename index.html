@@ -62,7 +62,7 @@
                 <!-- Image Display and Model Info -->
                 <div class="col-md-8 mx-auto">
                     <div class="image-display mb-4">
-                        <img id="modelImage" src="images/Bentley Continental GT.jpg" alt="Model Image" class="img-fluid rounded" />
+                        <img id="modelImage" src="images/Bentley Continental GT.jpg" alt="Model Image" class="img-fluid rounded large-image" onclick="openImageModal()" />
                     </div>
                     <div class="thumbnail-navigation d-flex justify-content-center mb-4" id="thumbnails"></div>
                     <div class="model-info">
@@ -81,10 +81,78 @@
     </div>
 </section>
 
+<!-- Modal for Enlarged Image -->
+<div id="imageModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Model Image</h5>
+                <button type="button" class="close" onclick="closeImageModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="images/Bentley Continental GT.jpg" alt="Enlarged Model Image" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* General styling for larger images */
+    #models .large-image {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        transition: transform 0.2s; /* Add transition for zoom effect */
+    }
+
+    #models .large-image:hover {
+        transform: scale(1.05); /* Zoom in effect on hover */
+    }
+
+    /* Ensure thumbnails remain responsive and small */
+    .thumbnail-navigation img.thumbnail {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .thumbnail-navigation img.thumbnail:hover {
+        transform: scale(1.1); /* Zoom in effect on hover for thumbnails */
+    }
+
+    /* Modal styling */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1050; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.8); /* Black w/ opacity */
+    }
+
+    .modal-content {
+        margin: auto;
+        padding: 0;
+        width: 90%; /* Could be more or less, depending on screen size */
+        max-width: 700px;
+    }
+
+    .close {
+        cursor: pointer;
+    }
+</style>
 
 <script>
     const models = [
-        { name: "Bugatti Chiron", price: "$3,000,000", image: "images/Bugatti Chiron.jpeg" },
         { name: "Rolls-Royce Ghost", price: "$350,000", image: "images/Rolls-Royce Ghost.jpeg" },
         { name: "Rolls-Royce Cullinan", price: "$325,000", image: "images/Rolls-Royce Cullinan.webp" },
         { name: "Bentley Continental GT", price: "$230,000", image: "images/Bentley Continental GT.jpg" },
@@ -101,6 +169,7 @@
         document.getElementById("modelImage").src = models[index].image;
         document.getElementById("modelTitle").textContent = models[index].name;
         document.getElementById("modelPrice").textContent = models[index].price;
+        document.getElementById("modalImage").src = models[index].image; // Update modal image source
     }
 
     function loadThumbnails() {
@@ -133,12 +202,29 @@
         alert(`${models[currentIndex].name} has been added to your cart.`);
     }
 
+    function openImageModal() {
+        document.getElementById("imageModal").style.display = "block"; // Show modal
+    }
+
+    function closeImageModal() {
+        document.getElementById("imageModal").style.display = "none"; // Hide modal
+    }
+
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar');
         if (window.scrollY > 50) navbar.classList.add('scrolled');
         else navbar.classList.remove('scrolled');
     });
+
+    // Close modal when clicking outside of modal content
+    window.onclick = function(event) {
+        const modal = document.getElementById("imageModal");
+        if (event.target === modal) {
+            closeImageModal();
+        }
+    };
 </script>
+
 
 <!-- About Section -->
 <section id="about" class="section py-5 bg-light">
